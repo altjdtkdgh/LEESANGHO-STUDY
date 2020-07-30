@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+		<title>회원가입 페이지</title>
+		<link rel="stylesheet" th:href="@{/css/style.css}"></link>
+</head>
+<body>
+	<div class="container">
+		<h2>회원가입</h2>
+		<form id="frm" name="frm" method="post" action="/user/write">
+			<table class="user_write">
+			<tr>
+				<td>아이디:</td>
+				<td><input type="text" id="id" name="id"></td>
+			</tr>
+			<tr>
+				<td>비밀번호:</td>
+				<td><input type="text" id="pw" name="pw"></td>
+			</tr>	
+			<tr>
+				<td>이름:</td>
+				<td><input type="text" id="userName" name="userName"></td>
+			</tr>
+			<tr>
+				<td>그룹:</td>
+				<td>
+					  <select name="groupId" >
+					    <option value="none">=== 선택 ===</option>
+					    <option value="admin">관리자</option>
+					    <option value="gnrl">일반사용자</option>
+					  </select>
+				</td>
+			</tr>
+			</table>
+			<input type="submit" id ="submit" value="저장" class="btn">
+			<button type="button" onclick="location.href='/login' ">취소</button>
+		</form>
+	</div>
+</body>
+</html>
