@@ -38,7 +38,7 @@ public class BoardServiceImpl implements BoardService{
 		// TODO Auto-generated method stub
 		
 		boardMapper.updateHitCount(boardIdx);
-		
+		//int i = 10/0;
 		BoardDto board = boardMapper.selectBoardDetail(boardIdx);
 		return board;
 	}
