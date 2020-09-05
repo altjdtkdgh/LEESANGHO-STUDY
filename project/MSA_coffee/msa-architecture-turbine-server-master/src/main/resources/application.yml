@@ -19,5 +19,5 @@ eureka:
       
 #Turbine Server 
 turbine:     
-  appConfig: msa-service-coffee-order,msa-service-coffee-member,msa-service-coffee-status
+  appConfig: msa-service-coffee-order,msa-service-coffee-member,msa-service-coffee-status,msa-service-board
   clusterNameExpression: new String("default")
