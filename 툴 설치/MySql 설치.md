@@ -12,11 +12,11 @@ MySQL Community Downloads의 MySQL Community Server 선택
 
 3. Select Operating System > Microsoft Windows 선택
 자신의 OS에 맞게 선택한다.
-1. MySQL Installer MSI(윈도우 설치 마법사를 통한 설치) 옆의 Download 클릭
 
+-MySQL Installer MSI(윈도우 설치 마법사를 통한 설치) 옆의 Download 클릭
 <img src="https://gmlwjd9405.github.io/images/mysql-download/3.png" />
 
-2.mysql-installer-web-community-5.7.17.0.msi 다운로드
+- mysql-installer-web-community-5.7.17.0.msi 다운로드
 <img src="https://gmlwjd9405.github.io/images/mysql-download/4.png" />
 4. 설치 과정
 
