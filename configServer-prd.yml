@@ -1,0 +1,11 @@
+
+# api-prod.yml
+spring:
+  rabbitmq:
+    host: eomdev.com
+    port: 5672
+    username: user
+    password: password
+    virtual-host: vhost03
+custom:
+  message: Hello, api prod!

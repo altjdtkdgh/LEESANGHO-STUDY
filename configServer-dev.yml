@@ -1,42 +1,11 @@
-msaconfig:
-  greeting: "hello"
-  
----
-
 spring:
-  profiles: local
-
-msaconfig:
-  greeting: "welcome to local server"
-
----
-
-spring:
-  profiles: dev
-
-msaconfig:
-  greeting: "welcome to dev server"
-
----
-
-spring:
-  profiles: test
-  
-msaconfig:
-  greeting: "welcome to test server"
-
----
-
-spring:
-  profiles: staging
-  
-msaconfig:
-  greeting: "welcome to staging server"
-
----
-
-spring:
-  profiles: prod
-  
-msaconfig:
-  greeting: "welcome to prod server"
+  rabbitmq:
+    host: dev.eomdev.com
+    port: 5672
+    username: devUser
+    password: devPassword
+    virtual-host: vhost01
+server:
+  port: 9998    
+custom:
+  message: Hello, api-dev!
