@@ -1,4 +1,4 @@
-package eureka;
+package com.msa.eureka;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -3,11 +3,13 @@ server:
 spring:
   application:
     name: msa-architecture-eureka
+    
 #Config Server      
   cloud:
     config:
       uri: http://localhost:8888 
       name: msa-architecture-config-server
+      
 #Eureka Standalone Server       
 eureka:
   client:

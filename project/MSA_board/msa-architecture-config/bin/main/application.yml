@@ -1,0 +1,13 @@
+server:
+  port: 8888
+  
+spring:
+  application:
+    name: msa-architecture-config
+    
+  cloud:
+    config:
+      server:
+        git: 
+          uri: https://github.com/altjdtkdgh/LEESANGHO-STUDY.git
+      
