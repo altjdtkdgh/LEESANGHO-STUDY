@@ -1,0 +1,135 @@
+서비스 디스커버리
+
+
+MSA 에서는 여러 서비스 간의 호출로 구성이 된다.
+
+일반적으로 IP와 포트를 통해 호출을 하는데, 클라우드 환경에서는 IP가 동적으로 변경되는 일이 많기 때문에 정확한(유효한) 위치를 알아내는 기능이 필요하다.
+
+서비스 디스커버리가 이 일을 한다.
+
+
+책에 나오는 Netflix의 Eureka 를 사용해서 구성해 본다.
+
+
+유레카와의 통합을 위한 스프링 클라우드 라이브러리는 클라이언트와 서버의 두 부분으로 구성돼 있다.
+
+
+
+
+서버
+•스프링 부트 애플리케이션으로 실행한다.
+•서버 API 구성
+•등록된 서비스의 목록을 수집하기 위한 API
+•새로운 서비스를 네트워크 위치 주소와 함께 등록하기 위한 API
+•서버의 상태를 다른 서버로 복제함으로써 안정성과 가용성을 높일 수 있다.
+
+클라이언트
+•마이크로서비스 애플리케이션에 의존성을 포함시켜 사용한다.
+•기능
+•애플리케이션 시작 후 서버에 등록한다.
+•종료 전 서버에서 등록 해제를 담당한다.
+•유레카 서버로부터 주기적으로 최신 서비스 목록을 받아온다.
+
+
+Eureka 서버 설정:
+
+=======================================================
+- 프로젝트에 dependency가 추가
+
+build.gradle 파일 추가:
+
+implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+
+=======================================================
+
+Main Application에 @EnableEurekaServer를 추가해 유레카 서버를 활성화한다.
+
+@EnableEurekaServer
+@SpringBootApplication
+public class MsaArchitectureEurekaApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(MsaArchitectureEurekaApplication.class, args);
+	}
+
+}
+========================================================
+application.yml 파일 추가:
+
+server:
+  port: 9091
+spring:
+  application:
+    name: msa-architecture-eureka
+#Config Server      
+  cloud:
+    config:
+      uri: http://localhost:8888 
+      name: msa-architecture-config-server
+#Eureka Standalone Server       
+eureka:
+  client:
+    registerWithEureka: true  #유레카 서버에 본인 서비스를 등록할 건지 여부
+    fetchRegistry: false       #유레카 서버로부터 서비스 목록을 로컬 캐시에 저장할 건지 여부
+    serviceUrl:
+      defaultZone: http://localhost:${server.port}/eureka/
+      
+============================================================
+이제 Spring Cloud Application을 시작한다.
+
+그리고 localhost:{port} 로 이동하면 화면으로 확인 가능하다.
+
+그리고 /eureka/apps 로 이동하여 서버에 등록된 마이크로서비스의 목록을 확인 가능하다.
+
+
+이제 Eureka 서버에 등록될 서비스를 만들 차례다.
+
+클라이언트용 Spring Boot Application을 생성하자.
+
+Spring Initializr에서 검색해보니 Eureka Discovery를 쓰면 될 것 같았다.
+
+Eureka Discovery를 추가하고 프로젝트를 생성하자.
+
+========================================================
+build.gradle 파일 추가:
+
+implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+========================================================
+
+
+클라이언트는
+1.자신을 Eureka 서버에 등록하고 호스트, 포트, 상태 정보, URL, 홈페이지 URL을 보낸다.
+•Eureka 서버는 서비스의 각 인스턴스로부터 생존신호(Heartbeat) 메시지를 받는다.
+•설정된 기간 동안 생존신호 메시지를 받지 못하면 레지스트리에서 서비스가 삭제된다.
+2.서버로부터 데이터를 가져와서 캐싱하고 주기적으로 변경사항을 점검한다.
+
+
+
+
+유레카 클라이언트 활성화 시키는 방법은
+1.@EnableDiscoveryClient Annotation을 메인 클래스에 추가
+2.컨설, 유레카, 주키퍼 등 다수의 클라이언트 구현체가 classpath에 있을 경우 @EnableEurekaClient Annotation을 추가
+
+@EnableDiscoveryClient는 spring-cloud-commons에 존재하고,
+
+@EnableEurekaClient는 spring-cloud-netflix에 존재하고 유레카만을 위해 작동한다.
+
+=========================================================
+@EnableEurekaClient
+@SpringBootApplication
+public class MsaServiceBoardApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(MsaServiceBoardApplication.class, args);
+	}
+
+}
+========================================================
+application.yml 파일 추가:
+
+#Eureka Client   
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9091/eureka/
+=========================================================
