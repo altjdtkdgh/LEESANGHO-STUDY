@@ -292,3 +292,5 @@ live-yaboong, it's working!
 
 
 
+기동시 파라미터
+-Dspring.profiles.active=live
