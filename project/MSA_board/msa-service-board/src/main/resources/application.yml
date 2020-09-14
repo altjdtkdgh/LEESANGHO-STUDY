@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: msa-service-board
+  sleuth:   #sleuth 설정  해당 상관관계 ID에서 맨 마지막 값인 false값은 이 트랜잭션을 zipkin에 전송하지 않는다는 뜻이다. 이 비율은 1/10 값이 기본 설정이다. 즉 10번요청시 1번의 비율로 zipkin에 해당 트랜잭션 정보를 전송한다는 뜻인데 다음 설정으로 비율을 조절 할 수 있다.
+   sampler:
+    probability: 1.0
 
 #Config Server      
   cloud:
@@ -16,4 +19,9 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:9091/eureka/
-      
+#sleuth 로그 레벨 설정      
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.springframework.cloud.sleuth: DEBUG
+    
