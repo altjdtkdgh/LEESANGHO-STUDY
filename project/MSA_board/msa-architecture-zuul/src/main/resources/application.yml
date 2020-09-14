@@ -1,0 +1,30 @@
+server:
+  port: 9090
+    
+spring:
+  application:
+    name: msa-architecture-zuul
+
+#Config Server      
+  cloud:
+    config:
+      uri: http://localhost:8888 
+      name: msa-architecture-config
+#Eureka Client   
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9091/eureka/
+      
+#Zuul Routing    
+zuul:
+  ignoredServices: '*'  #routes에 정의되지 않은 모든 요청은 무시함
+  routes:
+    board:
+      path: /board/** #zuul context root
+      serviceId: msa-service-board #spring application name
+    
+    boardMember:
+      path: /boardMember/** #zuul context root
+      serviceId: msa-service-board-member #spring application name
+      
