@@ -5,6 +5,7 @@ Zuul 이란?
 
 
 ZUul은 edge 서비스로 다양하게 사용할 수 있습니다.
+
 • 
 인증과 보안 : 각 서비스가 분산되어있는 MSA에서 인증을 edge 서비스에서 구현함으로써 모든 서비스에 보안을 구성하지 않고도 보안성있는 어플리케이션 작성을 도모할 수 있습니다.
 
@@ -39,16 +40,19 @@ Zuul의 중심에는 다양한 필터들이 있으며 이러한 필터들을 통
 
 <figure class='imageblock alignCenter' data-filename="zuul_request_lifecycle.png" data-origin-width="960" data-origin-height="720" width="505" height="379"><span data-url='https://blog.kakaocdn.net/dn/cBrBfn/btqBlz6XzgX/C4DRCKBGRtuccpXCSov2r0/img.png' data-lightbox='lightbox' data-alt='zuul request lifecycle, 출처 :&amp;nbsp;https://github.com/Netflix/zuul/wiki'><img src='https://blog.kakaocdn.net/dn/cBrBfn/btqBlz6XzgX/C4DRCKBGRtuccpXCSov2r0/img.png' srcset='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcBrBfn%2FbtqBlz6XzgX%2FC4DRCKBGRtuccpXCSov2r0%2Fimg.png' data-filename="zuul_request_lifecycle.png" data-origin-width="960" data-origin-height="720" width="505" height="379"></span><figcaption>zuul request lifecycle, 출처 :&nbsp;https://github.com/Netflix/zuul/wiki</figcaption></figure>
 
+
 •PRE : origin server에 요청이 전송되기전에 실행되는 routing입니다. request의 인증 / 인가등의 확인 및 부여에 사용할 수 있습니다.
 •ROUTING : 실제 origin Server로 라우팅하는 것을 처리하는 filter입니다. Apache http client 또는 Ribbon을 이용하여 http 요청을 작성하고 보냅니다.
 •POST : origin server에서 응답을 받은 후 실행되는 filter입니다.
 •ERROR : PRE, ROUTING, POST filter 처리중 error가 일어났을 경우 실행되는 filter입니다.
+
 
 Zuul에는 위 4가지의 기본 적인 필터와 추가적으로 custom를 만들 수 있도록 되어있습니다. 그리고 각 Filter에는 아래와 같이 4가지 주요 키워드를 가지고 있습니다.
 •Type : filter가 적용되는 시점(PRE, ROUTING, POST, ERROR).
 •Execution Order : fileter가 적용되는 시점(Type) 안에서의 순서
 •Criteria : Filter가 실행되는 조건
 •Action : Filter가 실행될 때 수행되는 실질적인 로직
+
 
 이런 특징을 가지고 있는 Zuul은 API Gateway의 형태로 가장 많이 사용하게 됩니다. 해당 시스템을 사용하는 모든 사용자는 End-Point인 Zuul에 요청하고 Zuul에서 실제 서비스로 다이나믹 라우팅을 수행하여 실제 서비스를 접근하는 것입니다. 
 
