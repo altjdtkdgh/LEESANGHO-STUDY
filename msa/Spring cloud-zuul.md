@@ -8,24 +8,24 @@ Zuul의 중심에는 다양한 필터들이 있으며 이러한 필터들을 통
 기본적으로 Zuul에서 제공하고 있는 기본 Type 필터에는 PRE, ROUTING, POST, ERROR가 있습니다. 이러한 Filter들은 Chaining 방식으로 아래와 같이 거치도록 되어있습니다.
 
 
-•PRE : origin server에 요청이 전송되기전에 실행되는 routing입니다. request의 인증 / 인가등의 확인 및 부여에 사용할 수 있습니다.
+?PRE : origin server에 요청이 전송되기전에 실행되는 routing입니다. request의 인증 / 인가등의 확인 및 부여에 사용할 수 있습니다.
 
-•ROUTING : 실제 origin Server로 라우팅하는 것을 처리하는 filter입니다. Apache http client 또는 Ribbon을 이용하여 http 요청을 작성하고 보냅니다.
+?ROUTING : 실제 origin Server로 라우팅하는 것을 처리하는 filter입니다. Apache http client 또는 Ribbon을 이용하여 http 요청을 작성하고 보냅니다.
 
-•POST : origin server에서 응답을 받은 후 실행되는 filter입니다.
+?POST : origin server에서 응답을 받은 후 실행되는 filter입니다.
 
-•ERROR : PRE, ROUTING, POST filter 처리중 error가 일어났을 경우 실행되는 filter입니다.
+?ERROR : PRE, ROUTING, POST filter 처리중 error가 일어났을 경우 실행되는 filter입니다.
 
 
 Zuul에는 위 4가지의 기본 적인 필터와 추가적으로 custom를 만들 수 있도록 되어있습니다. 그리고 각 Filter에는 아래와 같이 4가지 주요 키워드를 가지고 있습니다.
 
-•Type : filter가 적용되는 시점(PRE, ROUTING, POST, ERROR).
+?Type : filter가 적용되는 시점(PRE, ROUTING, POST, ERROR).
 
-•Execution Order : fileter가 적용되는 시점(Type) 안에서의 순서
+?Execution Order : fileter가 적용되는 시점(Type) 안에서의 순서
 
-•Criteria : Filter가 실행되는 조건
+?Criteria : Filter가 실행되는 조건
 
-•Action : Filter가 실행될 때 수행되는 실질적인 로직
+?Action : Filter가 실행될 때 수행되는 실질적인 로직
 
 
 이런 특징을 가지고 있는 Zuul은 API Gateway의 형태로 가장 많이 사용하게 됩니다. 해당 시스템을 사용하는 모든 사용자는 End-Point인 Zuul에 요청하고 Zuul에서 실제 서비스로 다이나믹 라우팅을 수행하여 실제 서비스를 접근하는 것입니다. 
@@ -42,6 +42,7 @@ Eureka의 설정이 완료 되었으면 Zuul을 적용해 보자. 먼저 API Gat
 ==============================================================
 implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 implementation 'org.springframework.cloud:spring-cloud-starter-netflix-zuul'
+
 ==============================================================
 
 2. application.yml 파일에 Zuul설정에 필요한 정보를 추가한다.  라우팅에 관한 설정들을 zuul.routes 밑에 추가한다. 이 Api gateway가 받는 요청의 path가 /board/** 형식이라면 msa-service-board  라는 이름을 갖는 마이크로서비스에 요청을 넘기도록 설정하였다.
@@ -131,15 +132,16 @@ public class RouteFilter extends ZuulFilter {
         return null;
     }
 }
+
 ===========================================================================
 
-•filterType() : filter의 type으로 "pre", "route", "post", "error", "static"을 용도에 따라 return 하면 됩니다.
+?filterType() : filter의 type으로 "pre", "route", "post", "error", "static"을 용도에 따라 return 하면 됩니다.
 
-•filterOrder() : type안에서 해당 필터가 실행되는 순서입니다.
+?filterOrder() : type안에서 해당 필터가 실행되는 순서입니다.
 
-•shoudFilter() : run method를 실행한다면 true, 실행하지 않아도 된다면 false를 return합니다.
+?shoudFilter() : run method를 실행한다면 true, 실행하지 않아도 된다면 false를 return합니다.
 
-•run() : 실제 filter의 로직을 담당하는 method입니다.
+?run() : 실제 filter의 로직을 담당하는 method입니다.
 
 이렇게 만든 Class는 Bean으로 등록하면 filter가 등록되어 사용할 수 있게 됩니다.
 
@@ -175,4 +177,5 @@ public class SimpleFilter extends ZuulFilter {
 		 return 1;
 	}
 }
+
 ===================================================================================
