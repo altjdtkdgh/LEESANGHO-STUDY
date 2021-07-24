@@ -1,0 +1,51 @@
+/**
+ * 7. 동기화
+ */
+final String syncUriData = syncUri;
+final List<String> result = new ArrayList<String>();
+final callHttpClient httpClient = new callHttpClient();
+
+int numRunnables = Integer.parseInt(MlogCommProperties.getProperty("cache.sync.pool.size"));
+BlockingQueue<Runnable> queue = new ArrayBlockingQueue<Runnable>(numRunnables, true);
+RejectedExecutionHandler handler = new ThreadPoolExecutor.CallerRunsPolicy();
+ExecutorService executor = new ThreadPoolExecutor(numRunnables, numRunnables, 0L, TimeUnit.MILLISECONDS, queue, handler);
+
+for(int i=0; i < hostList.length; i++){
+	Thread.sleep(500);
+	final String hostUri = hostList[i]+":"+portList[i];
+	cLog.middleLog("[syncCacheFileForObject]Cache sync ["+hostUri+"]");
+	
+	if (!currentUri.equalsIgnoreCase(hostUri)) {
+		final String hostListData = hostList[i];
+		final String portListData = portList[i];
+		
+		executor.execute(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					StringBuilder makeUrl = new StringBuilder();
+					makeUrl.append(MlogCommProperties.getProperty("cache.sync.protocol"))
+							.append("://").append(hostListData)
+							.append(":").append(portListData)
+							.append(syncUriData)
+							.append(param);
+					httpclientinfoVo.setUrl(makeUrl.toString());
+					
+					httpClient.recursiveCall(httpclientinfoVo);
+					result.add(httpClient.getMessage());
+					cLog.middleLog("[syncCacheFileForObject]Sync cache message["+hostUri+"]["+httpClient.getMessage()+"]");
+				} catch (Exception e) {
+					e.printStackTrace();
+					result.add("false");
+					cLog.middleLog("[syncCacheFileForObject]Sync cache fail.["+hostUri+"]["+e.getClass().getName()+"]["+e.getMessage()+"]");
+				}
+			}
+		});
+	}
+}
+executor.shutdown();
+if (!executor.awaitTermination(Integer.parseInt(MlogCommProperties.getProperty("cache.sync.pool.timeout")), TimeUnit.MILLISECONDS)) {
+	result.add("false");
+	executor.shutdownNow();  //모든 task를 강제 종료합니다.
+	cLog.middleLog("[syncCacheFileForObject]Sync cache message[모든 task를 강제 종료]["+MlogCommProperties.getProperty("cache.sync.pool.timeout")+"]");
+}

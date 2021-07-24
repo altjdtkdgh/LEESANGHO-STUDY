@@ -1,0 +1,65 @@
+스프링 부트(spring boot) 외부 톰캣에서 실행 하는 법 
+
+1. pom.xml  수정(spring-boot-starter-tomcat  dependency 추가 )
+내용:
+=====================================
+<dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-tomcat</artifactId>
+      <scope>provided</scope>
+</dependency>
+=====================================
+
+2. Application.java  수정
+- SpringBootServletInitializer를 상속받으셔야 톰캣 기동 시 정상적으로 스프링 모듈이 동작합니다.
+그리고 configure를 오버라이드 해주셔야 서블릿 컨테이너 기동 시 스프링 설정을 적용시켜줍니다.
+내용:
+=====================================
+package net.donnert.spring.boot.web;
+ 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
+ 
+@SpringBootApplication
+public class Application extends SpringBootServletInitializer {
+  @Override
+  protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+    return builder.sources(Application.class);
+  }
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(Application.class, args);
+    }
+}
+=====================================
+3. 톰캣에 올리기
+이미 Application에 SpringBootServletInitializer를 상속받아놨기 때문에 별다른 설정은 없습니다.
+톰캣에 올리기 위해 Dynamic Web Module 프로젝트로 설정해줍니다.
+(프로젝트 우클릭-Properties-Project Facets-Dynamic Web Module 체크)
+
+참고: (위에 톰캣버전과 맞지 않을 경우 강제로 변경)
+프로젝트 디렉토리에서 .settings>org.eclipse.wst.common.project.facet.core.xml 파일을 열어서 3.1 로 되어 잇는 부분을 2.5로 변경하면 됩니다.
+<?xml version="1.0" encoding="UTF-8"?>
+<faceted-project>
+          <fixed facet="wst.jsdt.web"/>
+          <installed facet="java" version="1.7"/>
+          <installed facet="wst.jsdt.web" version="1.0"/>
+          <installed facet="jst.web" version="3.1"/> //2.5 로 변경한다.
+</faceted-project>
+
+
+
+버전내용:
+Servlet Spec	JSP Spec	EL Spec	WebSocket Spec	Authentication (JASIC) Spec	Apache Tomcat Version	Latest Released Version	Supported Java Versions
+5.1	TBD	TBD	TBD	TBD	10.1.x	None	8 and later
+5.0	3.0	4.0	2.0	2.0	10.0.x	10.0.6	8 and later
+4.0	2.3	3.0	1.1	1.1	9.0.x	9.0.46	8 and later
+3.1	2.3	3.0	1.1	1.1	8.5.x	8.5.68	7 and later
+3.1	2.3	3.0	1.1	N/A	8.0.x (superseded)	8.0.53 (superseded)	7 and later
+3.0	2.2	2.2	1.1	N/A	7.0.x	7.0.109	6 and later
+(7 and later for WebSocket)
+2.5	2.1	2.1	N/A	N/A	6.0.x (archived)	6.0.53 (archived)	5 and later
+2.4	2.0	N/A	N/A	N/A	5.5.x (archived)	5.5.36 (archived)	1.4 and later
+2.3	1.2	N/A	N/A	N/A	4.1.x (archived)	4.1.40 (archived)	1.3 and later
+2.2	1.1	N/A	N/A	N/A	3.3.x (archived)	3.3.2 (archived)	1.1 and later

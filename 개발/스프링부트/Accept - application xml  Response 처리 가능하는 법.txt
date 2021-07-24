@@ -1,0 +1,10 @@
+스프링 부트(spring boot) 에서 Accpet: application/xml  허용 
+
+1. pom.xml  수정(dependency 추가 )
+내용:
+=====================================
+<dependency>
+	<groupId>com.fasterxml.jackson.dataformat</groupId>
+	<artifactId>jackson-dataformat-xml</artifactId>
+</dependency>
+=====================================
