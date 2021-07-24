@@ -1,0 +1,17 @@
+- list
+
+    종류: LinkedList, Stack, Vector, ArrayList
+
+    특징: 순서가 있는 데이터의 집합, 데이터의 중복 허용
+
+- set
+
+    종류: HashSet, TreeSet, LinkedHashSet
+
+    특징: 순서를 유지하지 않는 데이터의 집합, 데이터의 중복을 허용 하지 않는다.
+
+- Map
+
+    종류: HashMap, TreeMap, HashTable
+
+    특징: 키와 값 쌍으로 이루어진 데이터의 집합. 키는 중복을 허용하지 않으며 값은 중복을 허용
