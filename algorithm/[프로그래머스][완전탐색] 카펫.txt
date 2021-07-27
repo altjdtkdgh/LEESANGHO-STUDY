@@ -1,0 +1,22 @@
+class Solution {
+    public int[] solution(int brown, int yellow) {
+        int[] answer = new int[2];
+        
+        int sum = (brown+ 4)  2;
+	        
+        for (int y = 0; y  sum; y++) {
+            int x = sum - y;
+
+            if (x  y) {
+                continue;
+            }
+
+            if ((x-2)(y-2) == yellow) {
+                answer[0] =x;
+                answer[1] =y;
+                break;
+            }
+        }
+        return answer;
+    }
+}
